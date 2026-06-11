@@ -63,7 +63,7 @@
   "label.result": "Wynik:",
   "panel.about": "O aplikacji",
   "panel.quick_start": "Szybki start",
-  "about.body": "303Modbus13 RTU Control v1.0\n\nAplikacja do sterowania i diagnostyki modułu przekaźnikowego\nIdeaflex 303Modbus13 przez interfejs szeregowy Modbus RTU.\n\nFunkcje:\n  • Sterowanie 2 przekaźnikami (coils 0–1)\n  • Odczyt 2 wejść opto (discrete inputs 0–1)\n  • Odczyt opcjonalnego sensora temperatury i wilgotności\n  • Zmiana adresu Modbus slave\n  • Konsola zaawansowana — wszystkie funkcje Modbus FC 01–06, 0F, 10\n\nInstrukcja obsługi: docs/USER_GUIDE.md\nDokumentacja rejestrów: docs/REGISTERS.md\n\n© Ideaflex sp. z o.o.",
+  "about.body": "303Modbus13 RTU Control v1.0\n\nAplikacja do sterowania i diagnostyki modułu przekaźnikowego\nIdeaflex 303Modbus13 przez interfejs szeregowy Modbus RTU.\n\nFunkcje:\n  • Sterowanie 2 przekaźnikami (coils 0–1)\n  • Odczyt 2 wejść opto (discrete inputs 0–1)\n  • Odczyt opcjonalnego sensora temperatury i wilgotności\n  • Zmiana adresu Modbus slave\n  • Konsola zaawansowana — wszystkie funkcje Modbus FC 01–06, 0F, 10\n\nInstrukcja obsługi: docs/USER_GUIDE.md\nDokumentacja rejestrów: docs/REGISTERS.md\n\nOpen source — licencja MIT (patrz plik LICENSE).",
   "about.step1": "1. Podłącz moduł do portu COM (np. przez konwerter USB-RS485).",
   "about.step2": "2. Wybierz port COM i kliknij „Połącz”.",
   "about.step3": "3. Na zakładce Sterowanie włączaj/wyłączaj przekaźniki.",

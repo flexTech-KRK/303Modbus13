@@ -63,7 +63,7 @@
   "label.result": "Result:",
   "panel.about": "About",
   "panel.quick_start": "Quick start",
-  "about.body": "303Modbus13 RTU Control v1.0\n\nApplication for control and diagnostics of the\nIdeaflex 303Modbus13 relay module over Modbus RTU.\n\nFeatures:\n  • Control 2 relays (coils 0–1)\n  • Read 2 opto inputs (discrete inputs 0–1)\n  • Optional temperature and humidity sensor\n  • Change Modbus slave address\n  • Advanced console — Modbus FC 01–06, 0F, 10\n\nUser guide: docs/USER_GUIDE.md\nRegister map: docs/REGISTERS.md\n\n© Ideaflex sp. z o.o.",
+  "about.body": "303Modbus13 RTU Control v1.0\n\nApplication for control and diagnostics of the\nIdeaflex 303Modbus13 relay module over Modbus RTU.\n\nFeatures:\n  • Control 2 relays (coils 0–1)\n  • Read 2 opto inputs (discrete inputs 0–1)\n  • Optional temperature and humidity sensor\n  • Change Modbus slave address\n  • Advanced console — Modbus FC 01–06, 0F, 10\n\nUser guide: docs/USER_GUIDE.md\nRegister map: docs/REGISTERS.md\n\nOpen source — MIT License (see LICENSE file).",
   "about.step1": "1. Connect the module to a COM port (e.g. via USB-RS485).",
   "about.step2": "2. Select COM port and click Connect.",
   "about.step3": "3. On the Control tab, turn relays on/off.",

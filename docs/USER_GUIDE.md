@@ -35,7 +35,13 @@ python app.py
 
 ## 2. Connection tab
 
-![Connection tab](images/01-connection.png)
+Before connecting (select COM port and Slave ID):
+
+![Connection tab — disconnected](images/01-connection-disconnected.png)
+
+After a successful connection (green status banner):
+
+![Connection tab — connected](images/01-connection-connected.png)
 
 ### Connect to the module
 
@@ -64,7 +70,13 @@ Use this only with **one module** on the bus:
 
 ## 3. Control tab
 
-![Control tab](images/02-control.png)
+When disconnected, controls are locked until you connect on the Connection tab:
+
+![Control tab — disconnected](images/02-control-disconnected.png)
+
+When connected, relays and inputs are active. The log shows commands and automatic input reads after each coil write:
+
+![Control tab — connected](images/02-control-connected.png)
 
 ### Relays
 
@@ -169,4 +181,4 @@ If you have any problems or questions, contact **FlexTech_KRK** on [Allegro](htt
 
 ---
 
-*Ideaflex sp. z o.o. — 303Modbus13 RTU Control*
+*303Modbus13 RTU Control — MIT License*

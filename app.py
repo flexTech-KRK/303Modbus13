@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 303Modbus13 RTU Control — GUI for Ideaflex 303Modbus13 relay module.
-Ideaflex sp. z o.o.
+MIT License — see LICENSE.
 """
 
 from __future__ import annotations

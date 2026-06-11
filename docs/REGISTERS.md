@@ -308,4 +308,4 @@ If you have any problems or questions, contact **FlexTech_KRK** on [Allegro](htt
 
 ---
 
-*© Ideaflex sp. z o.o. — documentation for 303Modbus13 module*
+*Documentation for 303Modbus13 module — MIT License*

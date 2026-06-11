@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Modbus RTU](https://img.shields.io/badge/Modbus-RTU-green.svg)](docs/REGISTERS.md)
 [![GitHub](https://img.shields.io/badge/GitHub-flexTech--KRK%2F303Modbus13-blue.svg)](https://github.com/flexTech-KRK/303Modbus13)
-[![License](https://img.shields.io/badge/License-Proprietary-orange.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Desktop GUI application for controlling and diagnosing the **Ideaflex 303Modbus13** relay module over **Modbus RTU** (serial/COM).
 
@@ -143,6 +143,7 @@ client.close()
 | `locales/pl.json`, `locales/en.json` | Translation strings |
 | `modbus_device.py` | Modbus RTU communication layer |
 | `requirements.txt` | Python dependencies |
+| `LICENSE` | MIT License |
 | `README.md` | This file |
 | `scripts/generate_pdfs.py` | Build PDF documentation |
 | `docs/USER_GUIDE.md` | User guide with screenshots |
@@ -201,7 +202,7 @@ TCP/RTU application version: local repo `ModBus_Relay_303Modbus13` (RTU/COM vers
 
 ## License
 
-© **Ideaflex sp. z o.o.** — software provided to customers with the 303Modbus13 module.
+[MIT License](LICENSE) — free to use, modify, and distribute. Copyright (c) 2026 Ideaflex sp. z o.o.
 
 ---
 
