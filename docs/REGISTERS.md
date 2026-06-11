@@ -114,6 +114,74 @@ FC 0x01, Slave=255, Address=0, Count=8
 → data byte: bit0 = CH1, bit1 = CH2, …
 ```
 
+### Delayed switching (flash ON / flash OFF)
+
+The module supports timed relay pulses (delay base **0.1 s**, range **1–65535** → **0.1–6553.5 s**). This is **not** a single “delay register” — each relay has a **2-register block** written with **FC `0x10`** (Write Multiple Registers).
+
+| Relay | Start address (holding) | Formula |
+|-------|-------------------------|---------|
+| CH1 | **3** (`0x0003`) | `3 + 5×(n−1)` |
+| CH2 | **8** (`0x0008`) | |
+| CH3 | 13 (`0x000D`) | (8-channel firmware) |
+| CH4 | 18 (`0x0012`) | |
+
+**Write 2 registers** at the channel start address:
+
+| Register offset | Value | Meaning |
+|-----------------|-------|---------|
+| +0 (mode) | `4` (`0x0004`) | **Pulse ON** — relay **ON immediately**, then auto **OFF** after delay |
+| +0 (mode) | `2` (`0x0002`) | **Pulse OFF** — relay **OFF immediately**, then auto **ON** after delay |
+| +1 (time) | `1…65535` | Delay in **0.1 s** units (`20` = 2.0 s, `30` = 3.0 s, max 6553.5 s) |
+
+> **Verified on 303Modbus13 (Slave `0x01`, COM4 @ 9600):** `FC 0x10`, Address=`3`, Values=`[4, 30]` → CH1 ON, auto OFF after 3.0 s. Screenshot in [USER_GUIDE.md](USER_GUIDE.md).
+
+**Relay control modes summary:**
+
+| Mode | How | Immediate? | Timer |
+|------|-----|------------|-------|
+| Manual ON/OFF | FC `0x05` / `0x0F`, coil addr `0`/`1` | Yes | No |
+| Pulse ON | FC `0x10`, block addr `3`/`8`, values `[4, time]` | ON now | Auto OFF |
+| Pulse OFF | FC `0x10`, block addr `3`/`8`, values `[2, time]` | OFF now | Auto ON |
+
+Only mode values **`2`** and **`4`** are documented for delayed switching. No other timer modes are known for this firmware.
+
+**Example — CH1 ON for 3.0 s, then auto OFF (Slave `0x01`):**
+```
+FC 0x10, Slave=1, Address=3, Count=2, Values=[4, 30]
+```
+Frame (hex): `01 10 00 03 00 02 04 00 04 00 1E` + CRC
+
+**Example — CH2 ON for 2.0 s, then auto OFF:**
+```
+FC 0x10, Slave=1, Address=8, Count=2, Values=[4, 20]
+```
+
+**Example — CH1 OFF for 5.0 s, then auto ON:**
+```
+FC 0x10, Slave=1, Address=3, Count=2, Values=[2, 50]
+```
+
+**In the app Advanced console:**
+
+| Field | CH1 flash 3 s | CH2 flash 3 s |
+|-------|---------------|---------------|
+| Function | Write Multiple Registers (0x10) | same |
+| Address | `3` | `8` |
+| Count | `2` | `2` |
+| Values | `4,30` | `4,30` |
+| Slave | `1` (or empty if connected) | same |
+
+> **Note:** Delay mode uses **holding register blocks** (`0x0003`, `0x0008`, …), not coil writes (`0x0000`, `0x0001`). Normal **ON/OFF** buttons in the app use FC `0x05` / `0x0F` (immediate switch). Manufacturer reference: LC/chinalctech 2-channel Modbus RTU relay (same hardware family as 303Modbus13).
+
+**Other holding registers (manufacturer):**
+
+| Address | Description | Write FC |
+|---------|-------------|----------|
+| 0 | Device address (Slave ID) | `0x10`, Slave=0 broadcast |
+| 1001 (`0x03E9`) | Baud rate (`2`=4800, `3`=9600, `4`=19200) | `0x10` |
+
+---
+
 **Example — turn both relays ON (app, Both ON):**
 ```
 FC 0x0F, Slave=255, Address=0, Count=8, Values=[ON, ON, ON, ON, ON, ON, ON, ON]

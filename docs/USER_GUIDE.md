@@ -139,6 +139,45 @@ The **Modbus console** sends raw Modbus frames for testing and integration work.
 | CH1 ON | Write Single Coil (0x05) | 0 | 1 | 1 | empty |
 | Both ON | Write Multiple Coils (0x0F) | 0 | 8 | 1,1,1,1,1,1,1,1 | empty |
 | Set address 1 | Write Multiple Registers (0x10) | 0 | 1 | 1 | 0 |
+| CH1 ON 3 s, then auto OFF | Write Multiple Registers (0x10) | 3 | 2 | 4,30 | empty |
+
+### Delayed relay switching (verified on hardware)
+
+The module supports timed pulses in addition to immediate ON/OFF. Use **FC 0x10** on holding-register blocks — **not** the coil addresses used by the Control tab.
+
+![CH1 delayed OFF — 3 seconds](images/05-advanced-delay-ch1.png)
+
+**Screenshot above:** connected at Slave `01`, command **Write Multiple Registers (0x10)**, Address **`3`**, Count **`2`**, Values **`4,30`**.
+
+**Effect on CH1:** relay turns **ON immediately**, then turns **OFF automatically after 3.0 s** (`30 × 0.1 s`). If NO1 is wired to IN1, you will see IN1 go active while the relay is on.
+
+| Field | CH1 (3 s pulse ON) | CH2 (3 s pulse ON) |
+|-------|--------------------|--------------------|
+| Function | Write Multiple Registers (0x10) | same |
+| Address | `3` | `8` |
+| Count | `2` | `2` |
+| Values | `4,30` | `4,30` |
+| Slave | empty (uses connected ID) | same |
+
+**Delay modes** (first value in `Values`; second value = time in **0.1 s** units, range 1–65535):
+
+| Mode | Value | Behaviour |
+|------|-------|-----------|
+| **Pulse ON** | `4` | Relay **ON** → auto **OFF** after delay |
+| **Pulse OFF** | `2` | Relay **OFF** → auto **ON** after delay |
+| **Manual** | — | Use FC `0x05` / `0x0F` on coil addresses `0` / `1` (Control tab) — immediate, no timer |
+
+Only modes **`2`** and **`4`** are used for delayed switching. There are no other documented timer modes on this module.
+
+**More examples:**
+
+| Goal | Address | Values | Time |
+|------|---------|--------|------|
+| CH1 ON 2 s, then OFF | `3` | `4,20` | 2.0 s |
+| CH1 OFF 5 s, then ON | `3` | `2,50` | 5.0 s |
+| CH2 ON 1 s, then OFF | `8` | `4,10` | 1.0 s |
+
+Full register map: **[REGISTERS.md](REGISTERS.md)** (section *Delayed switching*).
 
 **Tips:**
 
