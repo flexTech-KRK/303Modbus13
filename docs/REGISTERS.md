@@ -76,7 +76,7 @@ client = ModbusSerialClient(
 | **Both ON/OFF** | `write_coils(0, [state] * 8)` — **8** coils in frame (as in `apka_4.py`) |
 | **Relay read in GUI** | `read_coils(0, 2)`; on error — **cache** of last successful write (`relay_cache`) |
 | **Input read** | `read_discrete_inputs(0, count=8)` → result **IN1, IN2** (first 2 bits) |
-| **Auto-refresh** | Every **1 s** (`_poll_interval_ms = 1000`), off by default |
+| **Manual refresh** | On-demand read of coils, inputs, and optional T/H sensor (Refresh button) |
 | **Module scan** | COM ports × baud `[9600, 4800, 19200]` × slave `[255, 1, 0, 2, 3, 4, 5]`; timeout 0.4 s |
 | **Address change** | FC `0x10`, register 0, **Slave=0** (broadcast); reconnect with new ID after change |
 

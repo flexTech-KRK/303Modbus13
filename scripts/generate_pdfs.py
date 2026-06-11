@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate PDF versions of README.md and docs/REGISTERS.md."""
+"""Generate PDF versions of project documentation (Markdown to PDF)."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from xhtml2pdf import pisa
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = [
     (ROOT / "README.md", ROOT / "docs" / "README.pdf"),
+    (ROOT / "docs" / "USER_GUIDE.md", ROOT / "docs" / "USER_GUIDE.pdf"),
     (ROOT / "docs" / "REGISTERS.md", ROOT / "docs" / "REGISTERS.pdf"),
 ]
 
@@ -117,7 +118,25 @@ a {
     color: #64748b;
     text-align: center;
 }
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 8px 0 12px 0;
+    page-break-inside: avoid;
+}
 """
+
+
+def _make_link_callback(base_dir: Path):
+    def link_callback(uri: str, _rel) -> str:
+        if uri.startswith(("http://", "https://", "data:")):
+            return uri
+        path = (base_dir / uri).resolve()
+        if path.is_file():
+            return str(path)
+        return uri
+
+    return link_callback
 
 
 def md_to_pdf(source: Path, destination: Path) -> None:
@@ -141,7 +160,12 @@ def md_to_pdf(source: Path, destination: Path) -> None:
 
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("wb") as pdf_file:
-        status = pisa.CreatePDF(html, dest=pdf_file, encoding="utf-8")
+        status = pisa.CreatePDF(
+            html,
+            dest=pdf_file,
+            encoding="utf-8",
+            link_callback=_make_link_callback(source.parent),
+        )
     if status.err:
         raise RuntimeError(f"PDF generation failed: {destination}")
 

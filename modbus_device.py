@@ -7,6 +7,7 @@ from __future__ import annotations
 import struct
 import time
 from dataclasses import dataclass
+from types import SimpleNamespace
 from typing import Callable, Optional
 
 import serial
@@ -259,17 +260,34 @@ class Modbus303Device:
         if rr is None or rr.isError():
             raise ModbusIOException(f"Błąd zapisu rejestru {address}.")
 
-    def write_registers(self, address: int, values: list[int], slave_id: Optional[int] = None) -> None:
+    def write_registers(
+        self,
+        address: int,
+        values: list[int],
+        slave_id: Optional[int] = None,
+        *,
+        no_response_expected: Optional[bool] = None,
+    ) -> None:
         client = self._require_client()
         sid = self.slave_id if slave_id is None else slave_id
-        rr = client.write_registers(address=address, values=values, slave=sid)
+        if no_response_expected is None:
+            no_response_expected = sid == 0
+        rr = client.write_registers(
+            address=address,
+            values=values,
+            slave=sid,
+            no_response_expected=no_response_expected,
+        )
+        if no_response_expected:
+            time.sleep(POST_WRITE_DELAY_S)
+            return
         if rr is None or rr.isError():
             raise ModbusIOException("Błąd zapisu wielu rejestrów.")
 
     def set_device_address(self, new_address: int) -> None:
         if not (0x01 <= new_address <= 0xFF):
             raise ValueError("Adres slave musi być w zakresie 0x01–0xFF.")
-        self.write_registers(address=0, values=[new_address], slave_id=0)
+        self.write_registers(address=0, values=[new_address], slave_id=0, no_response_expected=True)
         self.slave_id = new_address
 
     def read_th_sensor(self) -> Optional[THReading]:
@@ -372,9 +390,14 @@ class Modbus303Device:
         if function == "write_registers":
             if not values:
                 raise ValueError("Podaj wartości rejestrów rozdzielone przecinkami.")
-            return self._check_modbus_response(
-                client.write_registers(address=address, values=values, slave=sid)
+            no_rsp = sid == 0
+            rr = client.write_registers(
+                address=address, values=values, slave=sid, no_response_expected=no_rsp,
             )
+            if no_rsp:
+                time.sleep(POST_WRITE_DELAY_S)
+                return SimpleNamespace(address=address, count=len(values))
+            return self._check_modbus_response(rr)
         raise ValueError(f"Nieznana funkcja Modbus: {function}")
 
 

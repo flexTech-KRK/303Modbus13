@@ -20,10 +20,11 @@ Desktop GUI application for controlling and diagnosing the **Ideaflex 303Modbus1
 | **2 relays** | CH1–CH2 ON/OFF, bulk Both ON / Both OFF |
 | **2 opto inputs** | Live status of IN1–IN2 (FC 0x02) |
 | **T/H sensor** | Temperature and humidity readout (if installed) |
-| **Auto-refresh** | Cyclic status polling every 1 s |
+| **Manual refresh** | Full status read (relays, inputs, optional T/H sensor) on demand |
 | **Address change** | Slave ID configuration via Modbus broadcast |
 | **Modbus console** | Full access to FC 01–06, 0F, 10 |
-| **Documentation** | Register map: [`docs/REGISTERS.md`](docs/REGISTERS.md) · [on GitHub](https://github.com/flexTech-KRK/303Modbus13/blob/main/docs/REGISTERS.md) |
+| **Polish / English UI** | Language selector in the header; choice saved in `settings.json` |
+| **Documentation** | [User guide](docs/USER_GUIDE.md) · [Register map](docs/REGISTERS.md) |
 
 ---
 
@@ -77,6 +78,8 @@ python app.py
 2. Select the COM port and click **Connect**.
 3. Default Slave ID: `FF` (255, factory address).
 4. Open the **Control** tab and test the relays.
+
+**Full UI walkthrough with screenshots:** **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)**
 
 ---
 
@@ -136,13 +139,16 @@ client.close()
 | Path | Description |
 |------|-------------|
 | `app.py` | Tkinter GUI — application entry point |
+| `i18n.py` | UI translations (Polish / English) |
+| `locales/pl.json`, `locales/en.json` | Translation strings |
 | `modbus_device.py` | Modbus RTU communication layer |
 | `requirements.txt` | Python dependencies |
 | `README.md` | This file |
 | `scripts/generate_pdfs.py` | Build PDF documentation |
+| `docs/USER_GUIDE.md` | User guide with screenshots |
 | `docs/REGISTERS.md` | Full Modbus register map |
-| `docs/REGISTERS.pdf` | PDF version of register map |
-| `docs/README.pdf` | PDF version of this file |
+| `docs/images/` | Application screenshots |
+| `docs/*.pdf` | PDF exports (README, USER_GUIDE, REGISTERS) |
 
 ### Generate PDFs
 
@@ -151,7 +157,7 @@ pip install markdown xhtml2pdf
 python scripts/generate_pdfs.py
 ```
 
-Output: `docs/README.pdf` and `docs/REGISTERS.pdf`.
+Output: `docs/README.pdf`, `docs/USER_GUIDE.pdf`, and `docs/REGISTERS.pdf`.
 
 ---
 

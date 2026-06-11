@@ -12,3 +12,4 @@ dist/
 *.log
 Thumbs.db
 desktop.ini
+settings.json
